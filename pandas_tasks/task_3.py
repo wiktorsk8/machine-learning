@@ -1,5 +1,6 @@
 import pandas as pd
 from pandas import DataFrame
+import numpy as np
 
 
 def load_data() -> DataFrame:
@@ -14,13 +15,13 @@ def load_data() -> DataFrame:
     ]
 
     capital_cities = [
-        'Wroclaw',
-        'Bydgoszcz / Torun',
-        'Lublin',
-        'Gorzow Wielkopolski / Zielona Gora',
-        'Lodz',
-        'Krakow',
-        'Warszawa'
+        'wroclaw',
+        'bydgoszcz / Torun',
+        'lublin',
+        'gorzow Wielkopolski / Zielona Gora',
+        'lodz',
+        'krakow',
+        'warszawa'
     ]
 
     surfaces = [
@@ -63,7 +64,7 @@ def load_data() -> DataFrame:
 
 def task_1():
     df = load_data()
-    df = df.where(df['surface'] < 20000).dropna()
+    df = df.where(df['surface'] < 20_000).dropna()
     print(df)
 
 def task_2():
@@ -78,8 +79,40 @@ def task_3():
 
 def task_4():
     df = load_data()
+    df = df.sort_values(by='population', ascending=False)
+    print(df)
+
+def task_5():
+    df = load_data()
     cols = [col for col in df.columns if col != 'capital_cities'] + ['capital_cities']
     df = df[cols]
     print(df)
 
-task_4()
+def task_6():
+    df = load_data()
+    df['capital_cities'] = df['capital_cities'].str.capitalize()
+    print(df)    
+
+def task_7():
+    df = load_data()
+
+    specific_regions = {}
+    for i, row in df.iterrows():
+        if (row['population'] / row['surface']) >= 140.0:
+            specific_regions[row['regions']] = True
+        else: 
+            specific_regions[row['regions']] = False
+    
+    print(specific_regions)
+
+def task_8():
+    df = load_data()
+    df = df[df['regions'] != 'lubuskie']
+    print(df)
+
+def task_9():
+    df = load_data()
+    described = df.describe(include=np.number)
+    print(described)
+
+task_9()
